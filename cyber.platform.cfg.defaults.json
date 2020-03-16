@@ -1,0 +1,7 @@
+{
+ 	"base_url": "https://dev-cloud.acronis.com/",
+	"partner_tenant": "partner",
+	"customer_tenant": "customer",
+	"edition": "standard",
+	"trace": 0
+}
