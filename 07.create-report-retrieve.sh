@@ -8,9 +8,6 @@
 
 . 01.basic_api_checks.sh
 
-# Call a function to pipe JSON from file, extract JSON property, remove quotas from the property's value
-_access_token=$(_get_access_token_from_file api_token.json)
-
 # Get Root tenant_id for the API Client
 # Call a function to pipe JSON from file, extract JSON property, remove quotas from the property's value
 _tenant_id=$(_get_tenant_id_from_file api_client.json)
@@ -35,12 +32,10 @@ _json='{
 # POST API call using function defined in basis_functions.sh
 # with following parameters
 # $1 - an API endpoint to call
-# $2 - a bearer token Bearer Authentication
-# $3 - Content-Type
-# $4 - POST data
+# $2 - Content-Type
+# $3 - POST data
 # The result is stored in created_report.json file
 _post_api_call_bearer "api/2/reports" \
-					"${_access_token}" \
 					"application/json" \
 					"${_json}" > created_report.json
 
@@ -60,10 +55,9 @@ while [[ $_report_status != "saved" ]] ; do
 	# GET call using function defined in basis_functions.sh
 	# with following parameters
 	# $1 - an API endpoint to call
-	# $2 - a bearer token Bearer Authentication
 	# The result is stored in "${_report_id}_report.json" file
 	_get_api_call_bearer "api/2/reports/${_report_id}/stored" \
-					 "${_access_token}" > "${_report_id}_report_status.json"
+					  > "${_report_id}_report_status.json"
 
 
 	_report_status=$(jq '.items[0].status' < "${_report_id}_report_status.json" | sed -e 's/^"//' -e 's/"$//')

@@ -8,9 +8,6 @@
 
 . 01.basic_api_checks.sh
 
-# Call a function to pipe JSON from file, extract JSON property, remove quotas from the property's value
-_access_token=$(_get_access_token_from_file api_token.json)
-
 # Call a function to pipe JSON from file, extract JSON property
 _tenant_id=$(_get_tenant_id_from_file api_client.json)
 
@@ -25,12 +22,10 @@ _json='{
 # POST API call using function defined in basis_functions.sh
 # with following parameters
 # $1 - an API endpoint to call
-# $2 - a bearer token Bearer Authentication
-# $3 - Content-Type
-# $4 - POST data
+# $2 - Content-Type
+# $3 - POST data
 # The result is stored in partner.json file
 _post_api_call_bearer "api/2/tenants" \
-					"${_access_token}" \
 					"application/json" \
 					"${_json}" > partner.json
 
@@ -44,10 +39,10 @@ _edition=$(_config_get_value edition)
 # GET call using function defined in basis_functions.sh
 # with following parameters
 # $1 - an API endpoint to call
-# $2 - a bearer token Bearer Authentication
+
 # The result is stored in offering_items_available_for_child.json file
 _get_api_call_bearer "api/2/tenants/${_tenant_id}/offering_items/available_for_child?kind=${_kind}&edition=${_edition}" \
-					"${_access_token}" > offering_items_available_for_child.json
+					 > offering_items_available_for_child.json
 
 
 # Replace "items" with "offering_items" as the following API call expects to have it as a root JSON element
@@ -61,10 +56,8 @@ _partner_tenant_id=$(_get_id_from_file partner.json)
 # PUT API call using function defined in basis_functions.sh
 # with following parameters
 # $1 - an API endpoint to call
-# $2 - a bearer token Bearer Authentication
-# $3 - Content-Type
+# $2 - Content-Type
 # $4 - PUT data
 _put_api_call_bearer "api/2/tenants/${_partner_tenant_id}/offering_items" \
-					"${_access_token}" \
 					"application/json" \
 					"$(cat offering_items_to_put.json)" > /dev/null

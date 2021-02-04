@@ -2,3 +2,6 @@
 *.csv
 *.pdf
 !cyber.platform.*.json
+.vscode
+*.bin
+!pdf/*.pdf

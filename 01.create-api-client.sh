@@ -12,8 +12,6 @@
 printf "\n"
 read -rp 'Login: ' _login
 read -rsp 'Password: ' _password
-printf "\n\n"
-
 
 # Request self-ifo from API using Basic Authentication
 # GET call using function defined in basis_functions.sh
@@ -27,11 +25,11 @@ _tenant_id=$(_get_api_call_basic "api/2/users/me" "${_login}" "${_password}" | j
 
 # Construct JSON to request an API Client creation
 _json='{
-		"type": "agent",
+		"type": "api_client",
 		"tenant_id": '$_tenant_id',
 		"token_endpoint_auth_method": "client_secret_basic",
 		"data": {
-				"name": "bash.App"
+				"client_name": "Acronis.GitHub.Bash.Examples.v2"
 				}
 	  }'
 

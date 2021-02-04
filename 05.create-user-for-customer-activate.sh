@@ -8,9 +8,6 @@
 
 . 01.basic_api_checks.sh
 
-# Call a function to pipe JSON from file, extract JSON property, remove quotas from the property's value
-_access_token=$(_get_access_token_from_file api_token.json)
-
 # Set response code to 400 -- login availability check failed
 _response_code=400
 
@@ -23,9 +20,8 @@ printf "\n\n"
 # GET call using function defined in basis_functions.sh
 # with following parameters
 # $1 - an API endpoint to call
-# $2 - a bearer token Bearer Authentication
 _get_api_call_bearer_with_response_code "api/2/users/check_login?username=${_username}" \
-										"${_access_token}" | {
+										| {
 											read -r _response_code
 											read -r # here we would read the response body if need it
 											if [[ $_response_code != 204 ]] ; then
@@ -44,9 +40,7 @@ _json='{
 		"tenant_id": "'$_customer_tenant_id'",
 		"login": "'${_username}'",
 		"contact": {
-      				"email": "'${_username}'@example.com",
-      				"firstname": "Bash",
-      				"lastname": "Example"
+      				"email": "'${_username}'@example.com"
 					}
 	  }'
 
@@ -54,12 +48,10 @@ _json='{
 # POST API call using function defined in basis_functions.sh
 # with following parameters
 # $1 - an API endpoint to call
-# $2 - a bearer token Bearer Authentication
-# $3 - Content-Type
-# $4 - POST data
+# $2 - Content-Type
+# $3 - POST data
 # The result is stored in user.json file
 _post_api_call_bearer "api/2/users" \
-					"${_access_token}" \
 					"application/json" \
 					"${_json}" > user.json
 
@@ -78,10 +70,8 @@ _json='{
 # POST API call using function defined in basis_functions.sh
 # with following parameters
 # $1 - an API endpoint to call
-# $2 - a bearer token Bearer Authentication
-# $3 - Content-Type
-# $4 - POST data
+# $2 - Content-Type
+# $3 - POST data
 _post_api_call_bearer "api/2/users/${_user_id}/password" \
-					"${_access_token}" \
 					"application/json" \
 					"${_json}"

@@ -2,6 +2,6 @@
  	"base_url": "https://dev-cloud.acronis.com/",
 	"partner_tenant": "partner",
 	"customer_tenant": "customer",
-	"edition": "standard",
+	"edition": "per_workload",
 	"trace": 0
 }

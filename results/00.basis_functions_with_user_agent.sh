@@ -39,6 +39,9 @@ _config_get_value() {
 # Base URL for API request
 _base_url=$(_config_get_value base_url)
 
+# Call a function to pipe JSON from file, extract JSON property, remove quotas from the property's value
+_access_token=$(_get_access_token_from_file api_token.json)
+
 # By default we don't trace API Calls info
 # trace set to 0 in cyber.platform.cfg.defaults.json
 # But you can override it in cyber.platform.cfg.json
@@ -58,9 +61,6 @@ _get_personal_tenant_id_from_file(){ jq '.personal_tenant_id' < "${1}" | sed -e 
 
 # Pipe JSON from file, extract JSON property, remove quotas from the property's value
 _get_installation_token_from_file(){ jq '.token' < "${1}" | sed -e 's/^"//' -e 's/"$//'; }
-
-# Call a function to pipe JSON from file, extract JSON property, remove quotas from the property's value
-_access_token=$(_get_access_token_from_file api_token.json)
 
 # Implement API Call tracing capability
 _call(){
@@ -243,7 +243,7 @@ _post_api_call_bearer () {
   curl	-s \
 		-X POST \
 		--url "${_base_url}${1}" \
-		-H "Authorization: Bearer ${_access_token}" \
+		-H "Authorization: Bearer _access_token" \
 		-H "Accept: application/json" \
 		-H "User-Agent: ACP 2.0/Acronis Cyber Platform Bash Examples" \
 		-H "Content-type: ${2}" \
